@@ -1,0 +1,24 @@
+{
+  "name": "445-apply-anywhere",
+  "version": "1.0.0",
+  "description": "A web app project (focus on DB) in TCSS 445",
+  "main": "index.js",
+  "scripts": {
+    "test": "index.js"
+  },
+  "keywords": [
+    "TCSS445",
+    "Database",
+    "Web app"
+  ],
+  "author": "TCSS 445",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "form-data": "^3.0.0",
+    "mysql": "^2.18.1",
+    "npm": "^6.14.0",
+    "pg": "^8.0.2"
+  }
+}
