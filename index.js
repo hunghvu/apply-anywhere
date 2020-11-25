@@ -18,7 +18,7 @@ const pool = new Pool({
     }
 })
 
-app.use("/",  express.static('pages'))
+app.use("/", express.static('pages'))
 
 
 app.listen(process.env.PORT || 5000, () => {
