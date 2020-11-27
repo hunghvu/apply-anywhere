@@ -1,4 +1,6 @@
 /**
+ * Index file for root directory.
+ * 
  * @author Hung Vu
  */
 const express = require('express')
@@ -9,7 +11,11 @@ app.use(bodyParser.json())
 
 var path = require('path')
 
-app.use("/", express.static('pages'))
+// app.use("/", express.static('pages'))
+
+// For local testing and development.
+app.use("/", express.static('demo-site'))
+app.use("/search", require('./demo-routes/home_demo.js'))
 
 
 app.listen(process.env.PORT || 5000, () => {
