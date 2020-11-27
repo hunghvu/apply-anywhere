@@ -9,15 +9,6 @@ app.use(bodyParser.json())
 
 var path = require('path')
 
-//A Pool of DB connections. 
-const { Pool } = require('pg')
-const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-        rejectUnauthorized: false,
-    }
-})
-
 app.use("/", express.static('pages'))
 
 
