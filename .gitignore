@@ -1,4 +1,6 @@
 node_modules/
 .vscode/
 .env
-pages/demo.html
+demo-site/
+demo-routes/
+views/project.ejs
