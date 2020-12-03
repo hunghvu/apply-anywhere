@@ -1,3 +1,7 @@
+/**
+ * This node provide Offer page with dynamic drop down menu.
+ * @author Hung Vu
+ */
 const express = require('express')
 const app = express()
 

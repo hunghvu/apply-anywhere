@@ -46,6 +46,7 @@ app.get("/salarypercity", (request, response) => {
 app.get("/salarypercompany", (request, response) => {
     response.render("salcompany", {})
 })
+app.use("/searchoffer", require ("./routes/searchoffer.js"))
 // Not implement.
 // app.get("/project", (request, response) => {
 //     response.render("project")

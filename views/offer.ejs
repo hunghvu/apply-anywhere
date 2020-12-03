@@ -80,7 +80,6 @@
                         </tr> 
                     </thead> 
 
-                    <!-- <tr>  -->
                         <!-- <td><?php echo $row['Pname'] ?></td> 
                         <td><?php echo $row['Dname'] ?></td>
                         <td><?php echo $row['Lname'] ?></td> 
@@ -89,13 +88,17 @@
 
                         
                         <%
-                        if(typeof job != 'undefined'){
-                        job.forEach(row => { 
-                            console.log(row)
+                        if(typeof result != 'undefined'){
+                            result.forEach(row => { 
                         %>
-                            <tr><td><%= row.job_title %></td></tr>
+                            <tr> 
+                                <td><%= row.job_title %></td>
+                                <td><%= row.exp_sal %></td>
+                                <td><%= row.industry %></td>
+                                <td><%= row.company %></td>
+                            </tr>
                         <% })} %>
-                    <!-- </tr>  -->
+                     
                     
                 </table> 
             </form>
