@@ -1,3 +1,7 @@
+<!-- 
+    Front end of Offer page.
+    Author: Hung Vu
+ -->
 <!DOCTYPE html> 
 <html lang="en"> 
     <head> 
@@ -51,16 +55,14 @@
                 </form> -->
             </div>
         </nav>
-        <!-- END -- Add HTML code for the top menu section (navigation bar) --> 
-        
-        <!-- Step 5c -->
+
         <div class="jumbotron">
             <p class="lead">Select a job title</p>
             <hr class="my-4">
             <form method="GET" action="../offer"> 
                 <select name="job_title" onchange='this.form.submit()'> 
                     <option selected>Select a job title</option> 
-                    <!-- <option value = "jobs"> jobs </option> -->
+                    <!-- Dynamically populate drop down option menu -->
                     <%
                     if(typeof job_title != 'undefined'){
                         job_title.forEach(row => {
@@ -73,34 +75,50 @@
                     <thead> 
                         <tr class="table-success"> 
                             <th scope="col">Job Title </th> 
-                            <!-- Should be department's name, but the sample output is labled "number", so I follow it. -->
                             <th scope="col">Expected Salary (USD)</th> 
                             <th scope="col">The Industry</th> 
-                            <th scope="col">Recruiter</th> 
                         </tr> 
-                    </thead> 
-
-                        <!-- <td><?php echo $row['Pname'] ?></td> 
-                        <td><?php echo $row['Dname'] ?></td>
-                        <td><?php echo $row['Lname'] ?></td> 
-                        <td><?php echo $row['Address'] ?></td>
-                        <td><?php echo $row['Bdate'] ?></td> -->
-
-                        
+                    </thead>
+                    <!-- Dynamically popuilate job info table (the first one)                         -->
                         <%
                         if(typeof result != 'undefined'){
+                            var set = new Set()
                             result.forEach(row => { 
+                                if (!set.has(row.industry)){
                         %>
-                            <tr> 
-                                <td><%= row.job_title %></td>
-                                <td><%= row.exp_sal %></td>
-                                <td><%= row.industry %></td>
-                                <td><%= row.company %></td>
-                            </tr>
-                        <% })} %>
-                     
-                    
+                                    <tr> 
+                                        <td><%= row.job_title %></td>
+                                        <td><%= row.exp_sal %></td>
+                                        <td><%= row.industry %></td>
+                                    </tr>
+                        <%          set.add(row.industry)
+                                }
+                            })
+                        } %>
                 </table> 
+
+                <table class="table table-hover"> 
+                    <thead> 
+                        <tr class="table-success"> 
+                            <th scope="col">Recruiter</th>
+                        </tr>
+                    </thead>
+                    <!-- Dynamically populate recruiter table -->
+                    <%
+                    if(typeof result != 'undefined'){
+                        var set = new Set()
+                        result.forEach(row => { 
+                            if (!set.has(row.company)){
+                    %>
+                                <tr> 
+                                    <td><%= row.company %></td>
+                                </tr>
+                    <%          set.add(row.company)
+                            }
+                        })
+                    } %>
+
+                </table>
             </form>
 
         </div>

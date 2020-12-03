@@ -22,17 +22,6 @@ router.get("/", (request, response, next) => {
         })
     next()
 }, (request, response) => {
-    // const value = request.query.job_title
-    // console.log(value)
-    // vulnerable to sql injection?
-    // TODO Separate to query + value to avoid injection, can combine offer and serachoffer.js
-    // const theQuery = " SELECT JOBS.JOB_TITLE, JOBS.EXP_SAL, CAREERS.INDUSTRY, LISTINGS.COMPANY "
-    //                     + "FROM   JOBS "
-    //                     + "JOIN   CAREERS "
-    //                     + "ON     JOBS.JOB_TITLE = CAREERS.JOB_TITLE " 
-    //                     + "JOIN   LISTINGS "
-    //                     + "ON     JOBS.JOB_TITLE = LISTINGS.JOB_TITLE "
-    //                     + "WHERE  JOBS.JOB_TITLE = '" + value + "';"
 
     value = [request.query.job_title]
     const theQuery = " SELECT JOBS.JOB_TITLE, JOBS.EXP_SAL, CAREERS.INDUSTRY, LISTINGS.COMPANY "
