@@ -31,15 +31,27 @@ app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
 // app.use("/search", require('./demo-routes/home_demo.js'))
 // app.use("/search", require('./demo-routes/home_demo.js'))
 
+// End point for home page, offer page, career path, salary (city) and salary (company).
 app.get("/", (request, response) => {
     response.render('index', {})
+})
+
+app.get("/offer", (request, response) => {
+    response.render('offer', {})
+})
+app.get("/career", (request, response) => {
+    response.render('salcity', {})
+})
+app.get("/salarypercity", (request, response) => {
+    response.render('salcity', {})
+})
+app.get("/salarypercompany", (request, response) => {
+    response.render('salcompany', {})
 })
 // Not implement.
 // app.get("/project", (request, response) => {
 //     response.render('project')
 // })
-
-
 
 app.listen(process.env.PORT || 5000, () => {
     console.log("Server up and running on port: " + (process.env.PORT || 5000));
