@@ -37,9 +37,7 @@ app.get("/", (request, response) => {
 })
 
 app.use("/offer", require("./routes/offer.js"))
-app.get("/career", (request, response) => {
-    response.render("salcity", {})
-})
+app.use("/career", require("./routes/career.js"))
 app.get("/salarypercity", (request, response) => {
     response.render("salcity", {})
 })

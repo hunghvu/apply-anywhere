@@ -75,7 +75,7 @@ INSERT INTO CAREERS VALUES ('Technology', 'HealthCare', 'Database Administrator'
 INSERT INTO CAREERS VALUES ('Science', 'Dentistry', 'Dentist');
 INSERT INTO CAREERS VALUES ('Science', 'Clinical Nurse', 'Nurse Practitioner');
 INSERT INTO CAREERS VALUES ('Engineering', 'Engine Design', 'Mechanical Engineer');
-
+-- Test duplicated data.
 INSERT INTO CAREERS VALUES ('Mathematics', 'Researcher', 'Mathematician');
 
 -- ***************************

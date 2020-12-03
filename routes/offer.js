@@ -1,3 +1,9 @@
+/**
+ * Middleware to process request from Offer page.
+ * @author Hung vu
+ */
+
+ // Setup
 const { Console } = require('console')
 const express = require('express')
 const app = express()
@@ -10,19 +16,18 @@ var path = require('path')
 app.set('view engine', 'ejs')
 app.engine('ejs', require('ejs').__express)
 app.set('views', path.join(__dirname, "views"))
+
 var job_title
 router.get("/", (request, response, next) => {
-    // const value = request.query.last_name
-    // vulnerable to sql injection?
+    // Info for drop down menu
     const theQuery = "SELECT JOB_TITLE FROM JOBS;" 
-    // console.log(value)
     pool.query(theQuery)
         .then(result => {
             job_title = result.rows
         })
     next()
 }, (request, response) => {
-
+    // Info to populate table
     value = [request.query.job_title]
     const theQuery = " SELECT JOBS.JOB_TITLE, JOBS.EXP_SAL, CAREERS.INDUSTRY, LISTINGS.COMPANY "
                             + "FROM   JOBS "
