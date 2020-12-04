@@ -62,44 +62,33 @@
     <div class="jumbotron">
         <p class="lead">Select a job title</p>
         <hr class="my-4">
-        <form method="GET" action="../offer">
-            <select name="job_title" onchange='this.form.submit()'>
-                <option selected>Select a job title</option>
-                <!-- Dynamically populate drop down option menu -->
-                <!-- <%
-                     if(typeof job_title != 'undefined'){
-                         job_title.forEach(row => {
-                     %>
-                <option value="<%= row.job_title %>"><%= row.job_title %></option>
-                <% })} %> -->
-            </select>
-
-            <table class="table table-hover">
+        <form method="GET" action="../career">
+            <!-- w-auto for auto width -->
+            <table class="table table-hover w-auto">
                 <caption style="color: green;">Job Title and number of Openings</caption>
                 <thead>
-                    
+
                     <tr class="table-success">
                         <th scope="col" style="width: 50%;">Job Title</th>
                         <th scope="col">Openings</th>
                         <!-- <th scope="col">The Industry</th>  -->
                     </tr>
                 </thead>
-                <!-- Dynamically popuilate job info table (the first one)                         -->
-                <!-- <%
+                <!-- Dynamically popuilate job openings table (the first one)                         -->
+                <%
                          if(typeof result != 'undefined'){
-                             var set = new Set()
+                            var set = new Set()
                              result.forEach(row => { 
-                                 if (!set.has(row.industry)){
+                                if (!set.has(row.job_title)){
                          %>
-                                     <tr> 
-                                         <td><%= row.job_title %></td>
-                                         <td><%= row.exp_sal %></td>
-                                         <td><%= row.industry %></td>
-                                     </tr>
-                         <%          set.add(row.industry)
-                                 }
+                <tr>
+                    <td><%= row.job_title %></td>
+                    <td><%= row.sum %></td>
+                </tr>
+                <%          set.add(row.job_title)
+                                    }
                              })
-                         } %> -->
+                         } %>
             </table>
 
             <table class="table table-hover">
@@ -112,20 +101,18 @@
                         <th scope="col">Industry</th>
                     </tr>
                 </thead>
-                <!-- Dynamically populate recruiter table -->
-                <!-- <%
+                <!-- Dynamically career path table -->
+                <%
                      if(typeof result != 'undefined'){
-                         var set = new Set()
                          result.forEach(row => { 
-                             if (!set.has(row.company)){
                      %>
-                                 <tr> 
-                                     <td><%= row.company %></td>
-                                 </tr>
-                     <%          set.add(row.company)
-                             }
+                <tr>
+                    <td><%= row.job_title %></td>
+                    <td><%= row.industry %></td>
+                </tr>
+                <%                                     
                          })
-                     } %> -->
+                     } %>
 
             </table>
         </form>
