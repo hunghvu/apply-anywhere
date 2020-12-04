@@ -1,0 +1,132 @@
+<!-- 
+    Front end of Offer page.
+    Author: Hung Vu
+ -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignment 4 Demo</title>
+    <!-- add a reference to the external stylesheet -->
+    <link rel="stylesheet" href="https://bootswatch.com/4/litera/bootstrap.min.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Apply Anywhere</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02"
+            aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarColor02">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="../">Home
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="../offer">Offer</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="../career">Career Path</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="../salarypercity">Salary (City)</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="../salarypercompany">Salary (Company)</a>
+                    <!--
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Separated link</a>
+                        </div>
+                    </li>
+                -->
+            </ul>
+            <!-- <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="text" placeholder="Search">
+                    <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+                </form> -->
+        </div>
+    </nav>
+
+    <div class="jumbotron">
+        <p class="lead">Select a job title</p>
+        <hr class="my-4">
+        <form method="GET" action="../offer">
+            <select name="job_title" onchange='this.form.submit()'>
+                <option selected>Select a job title</option>
+                <!-- Dynamically populate drop down option menu -->
+                <%
+                    if(typeof job_title != 'undefined'){
+                        job_title.forEach(row => {
+                    %>
+                <option value="<%= row.job_title %>"><%= row.job_title %></option>
+                <% })} %>
+            </select>
+
+            <table class="table table-hover">
+                <caption style="color: green;">Job Information</caption>
+                <thead>
+                    <tr class="table-success">
+                        <th scope="col" style="width: 33%;">Job Title </th>
+                        <th scope="col">Expected Salary (USD)</th>
+                        <th scope="col">The Industry</th>
+                    </tr>
+                </thead>
+                <!-- Dynamically popuilate job info table (the first one)                         -->
+                <%
+                        if(typeof result != 'undefined'){
+                            var set = new Set()
+                            result.forEach(row => { 
+                                if (!set.has(row.industry)){
+                        %>
+                <tr>
+                    <td><%= row.job_title %></td>
+                    <td><%= row.exp_sal %></td>
+                    <td><%= row.industry %></td>
+                </tr>
+                <%          set.add(row.industry)
+                                }
+                            })
+                        } %>
+            </table>
+
+            <table class="table table-hover">
+                <caption style="color: green;">The Recruiters</caption>
+                <thead>
+                    <tr class="table-success">
+                        <th scope="col">Recruiter</th>
+                    </tr>
+                </thead>
+                <!-- Dynamically populate recruiter table -->
+                <%
+                    if(typeof result != 'undefined'){
+                        var set = new Set()
+                        result.forEach(row => { 
+                            if (!set.has(row.company)){
+                    %>
+                <tr>
+                    <td><%= row.company %></td>
+                </tr>
+                <%          set.add(row.company)
+                            }
+                        })
+                    } %>
+
+            </table>
+        </form>
+
+    </div>
+</body>
+
+</html>

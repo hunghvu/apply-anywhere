@@ -1,0 +1,184 @@
+<!-- 
+    Front end of Offer page.
+    Author: Hung Vu
+ -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignment 4 Demo</title>
+    <!-- Chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"
+        integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw=="
+        crossorigin="anonymous"></script>
+    <!-- chartjs-plugin-labels/ https://github.com/emn178/chartjs-plugin-labels -->
+    <script src="https://cdn.jsdelivr.net/gh/emn178/chartjs-plugin-labels/src/chartjs-plugin-labels.js"></script>
+    <link rel="stylesheet" href="https://bootswatch.com/4/litera/bootstrap.min.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Apply Anywhere</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02"
+            aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarColor02">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="../">Home
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="../offer">Offer</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="../career">Career Path</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="../salarypercity">Salary (City)</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="../salarypercompany">Salary (Company)</a>
+                    <!--
+                     <li class="nav-item dropdown">
+                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                         <div class="dropdown-menu">
+                             <a class="dropdown-item" href="#">Action</a>
+                             <a class="dropdown-item" href="#">Another action</a>
+                             <a class="dropdown-item" href="#">Something else here</a>
+                             <div class="dropdown-divider"></div>
+                             <a class="dropdown-item" href="#">Separated link</a>
+                         </div>
+                     </li>
+                 -->
+            </ul>
+            <!-- <form class="form-inline my-2 my-lg-0">
+                     <input class="form-control mr-sm-2" type="text" placeholder="Search">
+                     <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+                 </form> -->
+        </div>
+    </nav>
+
+    <div class="jumbotron">
+        <p class="lead">Select a job title</p>
+        <hr class="my-4">
+        <form method="GET" action="../career">
+            <!-- First table -->
+            <!-- w-auto for auto width -->
+            <table class="table table-hover w-auto" style="float: left;">
+                <caption style="color: green;">Job Titles and number of Openings</caption>
+                <thead>
+
+                    <tr class="table-success">
+                        <th scope="col" style="width: 50%;">Job Title</th>
+                        <th scope="col">Openings</th>
+                        <!-- <th scope="col">The Industry</th>  -->
+                    </tr>
+                </thead>
+                <!-- Dynamically popuilate job openings table (the first one)                         -->
+                <%
+                         if(typeof result != 'undefined'){
+                            var set = new Set()
+                             result.forEach(row => { 
+                                if (!set.has(row.job_title)){
+                         %>
+                <tr>
+                    <td><%= row.job_title %></td>
+                    <td><%= row.sum %></td>
+                </tr>
+                <%          set.add(row.job_title)
+                                    }
+                             })
+                         } %>
+            </table>
+
+            <!-- Chart  -->
+            <canvas id="myChart" width="1000" height="500"></canvas>            
+
+            <!-- Using chart.js to create chart -->
+            <% if(typeof result != 'undefined'){ %>
+            <script>
+                // Cannot access result in script? -> use json stringify 
+                // to generate an array of json object?
+                var jobResultJson = <%- JSON.stringify(result) %>
+                    var titleSet = new Set()
+                var openingMap = new Map()
+                // Using set to avoid duplicated color, even if the chance is low.
+                var colorSet = new Set()
+                jobResultJson.forEach(row => {
+                    titleSet.add(row.job_title)
+                    // Key:value pair is add in order, so value's respective index will
+                    //  be the same, and pair-able with titleSet
+                    openingMap.set(row.job_title, row.sum)
+                    // Randomly generate color for pie chart
+                    //  16581375 is a max RGB value
+                    colorSet.add("#" + Math.floor(Math.random() * 16581375).toString(16))
+                });
+                var titleArray = Array.from(titleSet)
+                var openingArray = Array.from(openingMap.values())
+                var colorArray = Array.from(colorSet)
+                var chart = document.getElementById("myChart").getContext("2d")
+                var jobChart = new Chart(chart, {
+                    type: "pie",
+                    data: {
+                        labels: titleArray,
+                        datasets: [{
+                            label: "Openings per Job Title",
+                            data: openingArray,
+                            backgroundColor: colorArray
+                        }]
+                    },
+                    options: {
+                        maintainAspectRatio: false,
+                        responsive: false,
+                        plugins : {
+                            labels: [{
+                                render: 'label',
+                                fontColor: '#000',
+                                position: 'outside'
+                            }, 
+                            {
+                                render: 'percentage',
+                            }]
+                        }
+                    }
+                })
+            </script>
+            <% } %>
+
+            <!-- Second table -->
+            <table class="table table-hover">
+                <caption style="color: green;">Job Titles and their Industry</caption>
+                <thead>
+
+
+                    <tr class="table-success">
+                        <th scope="col" style="width: 50%;">Job Title</th>
+                        <th scope="col">Industry</th>
+                    </tr>
+                </thead>
+                <!-- Dynamically career path table -->
+                <%
+                     if(typeof result != 'undefined'){
+                         result.forEach(row => { 
+                     %>
+                <tr>
+                    <td><%= row.job_title %></td>
+                    <td><%= row.industry %></td>
+                </tr>
+                <%                                     
+                         })
+                     } %>
+
+            </table>
+        </form>
+
+    </div>
+</body>
+
+</html>
