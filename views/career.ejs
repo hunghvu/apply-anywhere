@@ -9,8 +9,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Assignment 4 Demo</title>
-    <!-- add a reference to the external stylesheet -->
-    <link rel="stylesheet" href="https://bootswatch.com/4/solar/bootstrap.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"
+        integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw=="
+        crossorigin="anonymous"></script>
+    <!-- chartjs-plugin-labels/ https://github.com/emn178/chartjs-plugin-labels -->
+    <script src="https://cdn.jsdelivr.net/gh/emn178/chartjs-plugin-labels/src/chartjs-plugin-labels.js"></script>
+    <link rel="stylesheet" href="https://bootswatch.com/4/litera/bootstrap.min.css">
 </head>
 
 <body>
@@ -63,9 +68,10 @@
         <p class="lead">Select a job title</p>
         <hr class="my-4">
         <form method="GET" action="../career">
+            <!-- First table -->
             <!-- w-auto for auto width -->
-            <table class="table table-hover w-auto">
-                <caption style="color: green;">Job Title and number of Openings</caption>
+            <table class="table table-hover w-auto" style="float: left;">
+                <caption style="color: green;">Job Titles and number of Openings</caption>
                 <thead>
 
                     <tr class="table-success">
@@ -91,6 +97,61 @@
                          } %>
             </table>
 
+            <!-- Chart  -->
+            <canvas id="myChart" width="1000" height="500"></canvas>            
+
+            <!-- Using chart.js to create chart -->
+            <% if(typeof result != 'undefined'){ %>
+            <script>
+                // Cannot access result in script? -> use json stringify 
+                // to generate an array of json object?
+                var jobResultJson = <%- JSON.stringify(result) %>
+                    var titleSet = new Set()
+                var openingMap = new Map()
+                // Using set to avoid duplicated color, even if the chance is low.
+                var colorSet = new Set()
+                jobResultJson.forEach(row => {
+                    titleSet.add(row.job_title)
+                    // Key:value pair is add in order, so value's respective index will
+                    //  be the same, and pair-able with titleSet
+                    openingMap.set(row.job_title, row.sum)
+                    // Randomly generate color for pie chart
+                    //  16581375 is a max RGB value
+                    colorSet.add("#" + Math.floor(Math.random() * 16581375).toString(16))
+                });
+                var titleArray = Array.from(titleSet)
+                var openingArray = Array.from(openingMap.values())
+                var colorArray = Array.from(colorSet)
+                var chart = document.getElementById("myChart").getContext("2d")
+                var jobChart = new Chart(chart, {
+                    type: "pie",
+                    data: {
+                        labels: titleArray,
+                        datasets: [{
+                            label: "Openings per Job Title",
+                            data: openingArray,
+                            backgroundColor: colorArray
+                        }]
+                    },
+                    options: {
+                        maintainAspectRatio: false,
+                        responsive: false,
+                        plugins : {
+                            labels: [{
+                                render: 'label',
+                                fontColor: '#000',
+                                position: 'outside'
+                            }, 
+                            {
+                                render: 'percentage',
+                            }]
+                        }
+                    }
+                })
+            </script>
+            <% } %>
+
+            <!-- Second table -->
             <table class="table table-hover">
                 <caption style="color: green;">Job Titles and their Industry</caption>
                 <thead>
