@@ -114,41 +114,48 @@
                 //  However, if there is a duplicated color, that index is skipped.
                 //  In other words, 1 color is lost, but the probability is low.
                 var colorSet = new Set()
-                var avgActualSalary = new Set()
+                var colorArray1 = []
+                var colorArray2 = []
+                var avgActualSalaryArray = []
+                var avgExpectedSalaryArray = []
+                var color1 = "#" + Math.floor(Math.random() * 16581375).toString(16)
+                var color2 = "#" + Math.floor(Math.random() * 16581375).toString(16)
                 jobResultJson.forEach(row => {
                     citySet.add(row.work_city)
-                    avgActualSalary.add(row.avg_actual)
-                    // Randomly generate color for pie chart
-                    //  16581375 is a max RGB value
-                    colorSet.add("#" + Math.floor(Math.random() * 16581375).toString(16))
+                    avgActualSalaryArray.push(row.avg_actual)
+                    avgExpectedSalaryArray.push(row.avg_expected)
+                    colorArray1.push(color1)
+                    colorArray2.push(color2)
+
                 });
 
                 var cityArray = Array.from(citySet)
-                var avgActualSalaryArray = Array.from(avgActualSalary)
-                var colorArray = Array.from(colorSet)
+
+
                 var chart = document.getElementById("myChart").getContext("2d")
                 var jobChart = new Chart(chart, {
-                    type: "horizontalBar",
+                    type: "bar",
                     data: {
                         labels: cityArray,
                         datasets: [{
-                            label: "Average-actual salary vs. Average-expected salary per city",
-                            data: [2],
-                            backgroundColor: colorArray
-                        }]
+                            label: "Average-actual salary",
+                            data: avgActualSalaryArray,
+                            backgroundColor: colorArray1
+                        },
+                        {
+                            label: "Average-expected salary",
+                            data: avgExpectedSalaryArray,
+                            backgroundColor: colorArray2
+                        }
+                    ]
                     },
                     options: {
                         maintainAspectRatio: false,
                         responsive: false,
                         plugins: {
                             labels: [
-                                // {
-                                //     render: 'label',
-                                //     fontColor: '#000',
-                                //     position: 'outside'
-                                // }, 
                                 {
-                                    render: 'percentage',
+                                    render: 'value',
                                 }]
                         },
                         scales: {

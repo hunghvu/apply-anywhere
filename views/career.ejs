@@ -126,11 +126,10 @@
                 var colorArray = Array.from(colorSet)
                 var chart = document.getElementById("myChart").getContext("2d")
                 var jobChart = new Chart(chart, {
-                    type: "bar",
+                    type: "horizontalBar",
                     data: {
                         labels: titleArray,
                         datasets: [{
-                            label: "Openings per Job Title",
                             data: openingArray,
                             backgroundColor: colorArray
                         }]
@@ -139,11 +138,14 @@
                         maintainAspectRatio: false,
                         responsive: false,
                         scales: {
-                            yAxes: [{
+                            xAxes: [{
                                 ticks: {
                                     beginAtZero: true
                                 }
                             }]
+                        },
+                        legend: {
+                            display: false,
                         }
                     }
                 })
