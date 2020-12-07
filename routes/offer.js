@@ -1,5 +1,5 @@
 /**
- * Middleware to process request from Offer page.
+ * Middleware to process request from Jobs page.
  * @author Hung vu
  */
 

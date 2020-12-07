@@ -1,5 +1,5 @@
 <!-- 
-    Front end of Openings page.
+    Front end of city page.
     Author: Hung Vu
  -->
 <!DOCTYPE html>
@@ -14,7 +14,7 @@
         integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw=="
         crossorigin="anonymous"></script>
     <!-- chartjs-plugin-labels/ https://github.com/emn178/chartjs-plugin-labels -->
-    <!-- <script src="https://cdn.jsdelivr.net/gh/emn178/chartjs-plugin-labels/src/chartjs-plugin-labels.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/gh/emn178/chartjs-plugin-labels/src/chartjs-plugin-labels.js"></script>
     <link rel="stylesheet" href="https://bootswatch.com/4/pulse/bootstrap.min.css">
 </head>
 
@@ -45,22 +45,22 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="../salarypercompany">Compare Salary</a>
                     <!--
-                     <li class="nav-item dropdown">
-                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-                         <div class="dropdown-menu">
-                             <a class="dropdown-item" href="#">Action</a>
-                             <a class="dropdown-item" href="#">Another action</a>
-                             <a class="dropdown-item" href="#">Something else here</a>
-                             <div class="dropdown-divider"></div>
-                             <a class="dropdown-item" href="#">Separated link</a>
-                         </div>
-                     </li>
-                 -->
+                      <li class="nav-item dropdown">
+                          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                          <div class="dropdown-menu">
+                              <a class="dropdown-item" href="#">Action</a>
+                              <a class="dropdown-item" href="#">Another action</a>
+                              <a class="dropdown-item" href="#">Something else here</a>
+                              <div class="dropdown-divider"></div>
+                              <a class="dropdown-item" href="#">Separated link</a>
+                          </div>
+                      </li>
+                  -->
             </ul>
             <!-- <form class="form-inline my-2 my-lg-0">
-                     <input class="form-control mr-sm-2" type="text" placeholder="Search">
-                     <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-                 </form> -->
+                      <input class="form-control mr-sm-2" type="text" placeholder="Search">
+                      <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+                  </form> -->
         </div>
     </nav>
 
@@ -71,34 +71,35 @@
             <!-- First table -->
             <!-- w-auto for auto width -->
             <table class="table table-hover w-auto" style="float: left;">
-                <caption style="color: green;">Job Titles and number of Openings</caption>
+                <caption style="color: green;">Average-actual salary vs. Average-expected salary per city</caption>
                 <thead>
 
                     <tr class="table-success">
-                        <th scope="col" style="width: 50%;">Job Title</th>
-                        <th scope="col">Openings</th>
+                        <th scope="col" style="width: 50%;">City</th>
+                        <th scope="col">Average-actual salary</th>
+                        <th scope="col">Average-expected salary</th>
                         <!-- <th scope="col">The Industry</th>  -->
                     </tr>
                 </thead>
                 <!-- Dynamically popuilate job openings table (the first one)                         -->
                 <%
-                         if(typeof result != 'undefined'){
-                            var set = new Set()
-                             result.forEach(row => { 
-                                if (!set.has(row.job_title)){
-                         %>
+                          if(typeof result != 'undefined'){
+                              result.forEach(row => { 
+
+                          %>
                 <tr>
-                    <td><%= row.job_title %></td>
-                    <td><%= row.sum %></td>
+                    <td><%= row.work_city %></td>
+                    <td><%= row.avg_actual %></td>
+                    <td><%= row.avg_expected %></td>
                 </tr>
-                <%          set.add(row.job_title)
-                                    }
-                             })
-                         } %>
+                <%          
+                                     
+                              })
+                          } %>
             </table>
 
             <!-- Chart  -->
-            <canvas id="myChart" width="1000" height="500"></canvas>            
+            <canvas id="myChart" width="1000" height="500"></canvas>
 
             <!-- Using chart.js to create chart -->
             <% if(typeof result != 'undefined'){ %>
@@ -106,38 +107,50 @@
                 // Cannot access result in script? -> use json stringify 
                 // to generate an array of json object?
                 var jobResultJson = <%- JSON.stringify(result) %>
-                    var titleSet = new Set()
-                var openingMap = new Map()
+
+                var citySet = new Set()
+
                 // Using set to avoid duplicated color, even if the chance is low.
                 //  However, if there is a duplicated color, that index is skipped.
                 //  In other words, 1 color is lost, but the probability is low.
                 var colorSet = new Set()
+                var avgActualSalary = new Set()
                 jobResultJson.forEach(row => {
-                    titleSet.add(row.job_title)
-                    // Key:value pair is add in order, so value's respective index will
-                    //  be the same, and pair-able with titleSet
-                    openingMap.set(row.job_title, row.sum)
+                    citySet.add(row.work_city)
+                    avgActualSalary.add(row.avg_actual)
                     // Randomly generate color for pie chart
                     //  16581375 is a max RGB value
                     colorSet.add("#" + Math.floor(Math.random() * 16581375).toString(16))
                 });
-                var titleArray = Array.from(titleSet)
-                var openingArray = Array.from(openingMap.values())
+
+                var cityArray = Array.from(citySet)
+                var avgActualSalaryArray = Array.from(avgActualSalary)
                 var colorArray = Array.from(colorSet)
                 var chart = document.getElementById("myChart").getContext("2d")
                 var jobChart = new Chart(chart, {
-                    type: "bar",
+                    type: "horizontalBar",
                     data: {
-                        labels: titleArray,
+                        labels: cityArray,
                         datasets: [{
-                            label: "Openings per Job Title",
-                            data: openingArray,
+                            label: "Average-actual salary vs. Average-expected salary per city",
+                            data: [2],
                             backgroundColor: colorArray
                         }]
                     },
                     options: {
                         maintainAspectRatio: false,
                         responsive: false,
+                        plugins: {
+                            labels: [
+                                // {
+                                //     render: 'label',
+                                //     fontColor: '#000',
+                                //     position: 'outside'
+                                // }, 
+                                {
+                                    render: 'percentage',
+                                }]
+                        },
                         scales: {
                             yAxes: [{
                                 ticks: {
@@ -149,32 +162,6 @@
                 })
             </script>
             <% } %>
-
-            <!-- Second table -->
-            <table class="table table-hover">
-                <caption style="color: green;">Job Titles and their Industry</caption>
-                <thead>
-
-
-                    <tr class="table-success">
-                        <th scope="col" style="width: 50%;">Job Title</th>
-                        <th scope="col">Industry</th>
-                    </tr>
-                </thead>
-                <!-- Dynamically career path table -->
-                <%
-                     if(typeof result != 'undefined'){
-                         result.forEach(row => { 
-                     %>
-                <tr>
-                    <td><%= row.job_title %></td>
-                    <td><%= row.industry %></td>
-                </tr>
-                <%                                     
-                         })
-                     } %>
-
-            </table>
         </form>
 
     </div>
