@@ -40,6 +40,7 @@ app.use("/offer", require("./routes/offer.js"))
 app.use("/career", require("./routes/career.js"))
 app.use("/salarypercity", require("./routes/city.js"))
 app.use("/salarypercompany", require("./routes/company.js"))
+app.use("/listings", require("./routes/listings.js"))
 
 // Not implement.
 // app.get("/project", (request, response) => {
