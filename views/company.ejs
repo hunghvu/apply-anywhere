@@ -1,5 +1,5 @@
 <!-- 
-    Front end of City Overview page.
+    Front end of Compare Salary page.
     Author: Hung Vu
  -->
 <!DOCTYPE html>
@@ -13,8 +13,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"
         integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw=="
         crossorigin="anonymous"></script>
-    <!-- chartjs-plugin-labels/ https://github.com/emn178/chartjs-plugin-labels -->
-    <script src="https://cdn.jsdelivr.net/gh/emn178/chartjs-plugin-labels/src/chartjs-plugin-labels.js"></script>
     <link rel="stylesheet" href="https://bootswatch.com/4/pulse/bootstrap.min.css">
 </head>
 
@@ -52,30 +50,28 @@
         <hr class="my-4">
         <form method="GET" action="../career">
             <table class="table table-hover w-auto" style="float: left;">
-                <caption style="color: green;">Average-actual salary vs. Average-expected salary per city</caption>
+                <caption style="color: green;">Company's average salary Vs. Job's market average</caption>
                 <thead>
                     <tr class="table-success">
-                        <th scope="col" style="width: 50%;">City</th>
-                        <th scope="col">Average-actual salary</th>
-                        <th scope="col">Average-expected salary</th>
+                        <th scope="col" style="width: 50%;">Company</th>
+                        <th scope="col">The difference (USD)</th>
                     </tr>
                 </thead>
-
-                <!-- Dynamically populate table -->
+                
+                <!-- Dynamically fill in table -->
                 <%
-                          if(typeof result != 'undefined'){
-                              result.forEach(row => { 
-
-                          %>
+                           if(typeof result != 'undefined'){
+                               result.forEach(row => { 
+ 
+                           %>
                 <tr>
-                    <td><%= row.work_city %></td>
-                    <td><%= row.avg_actual %></td>
-                    <td><%= row.avg_expected %></td>
+                    <td><%= row.company %></td>
+                    <td><%= row.company_vs_market_avg %></td>
                 </tr>
                 <%          
-                                     
-                              })
-                          } %>
+                                      
+                               })
+                           } %>
             </table>
 
             <!-- Chart  -->
@@ -87,64 +83,31 @@
                 // Cannot access result in script? -> use json stringify 
                 // to generate an array of json object?
                 var jobResultJson = <%- JSON.stringify(result) %>
-
-                var citySet = new Set()
-
-                // Using set to avoid duplicated color, even if the chance is low.
-                //  However, if there is a duplicated color, that index is skipped.
-                //  In other words, 1 color is lost, but the probability is low.
-                var colorSet = new Set()
+ 
                 var colorArray1 = []
                 var colorArray2 = []
-                var avgActualSalaryArray = []
-                var avgExpectedSalaryArray = []
-                var color1 = "#" + Math.floor(Math.random() * 16581375).toString(16)
-                var color2 = "#" + Math.floor(Math.random() * 16581375).toString(16)
+                var companyArray = []
+                var salaryDifferenceArray = []
                 jobResultJson.forEach(row => {
-                    citySet.add(row.work_city)
-                    avgActualSalaryArray.push(row.avg_actual)
-                    avgExpectedSalaryArray.push(row.avg_expected)
-                    colorArray1.push(color1)
-                    colorArray2.push(color2)
-
+                    companyArray.push(row.company)
+                    salaryDifferenceArray.push(row.company_vs_market_avg)
                 });
-
-                var cityArray = Array.from(citySet)
-
 
                 var chart = document.getElementById("myChart").getContext("2d")
                 var jobChart = new Chart(chart, {
-                    type: "bar",
+                    type: "line",
                     data: {
-                        labels: cityArray,
-                        datasets: [{
-                            label: "Average-actual salary",
-                            data: avgActualSalaryArray,
-                            backgroundColor: colorArray1
-                        },
+                        labels: companyArray,
+                        datasets: [
                         {
-                            label: "Average-expected salary",
-                            data: avgExpectedSalaryArray,
-                            backgroundColor: colorArray2
+                            label: "Average-salary difference",
+                            data: salaryDifferenceArray
                         }
-                    ]
+                        ]
                     },
                     options: {
                         maintainAspectRatio: false,
-                        responsive: false,
-                        plugins: {
-                            labels: [
-                                {
-                                    render: 'value',
-                                }]
-                        },
-                        scales: {
-                            yAxes: [{
-                                ticks: {
-                                    beginAtZero: true
-                                }
-                            }]
-                        }
+                        responsive: false
                     }
                 })
             </script>

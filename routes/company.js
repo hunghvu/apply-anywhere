@@ -1,5 +1,5 @@
 /**
- * Middleware to process request from Openings page.
+ * Middleware to process request from Compare Salary page.
  * @author Hung vu
  */
 
@@ -29,17 +29,14 @@ router.get("/", (request, response, next) => {
 }, (request, response) => {
     // Info to populate table
     value = [request.query.job_title]
-    const theQuery =  "SELECT     DERIVED_TABLE.sum, DERIVED_TABLE.JOB_TITLE, CAREERS.INDUSTRY "
-                    + "FROM       CAREERS "
-                    + "FULL JOIN (    SELECT SUM(LISTINGS.JOB_OPENINGS), LISTINGS.JOB_TITLE "
-                                    + "FROM LISTINGS "
-                                    + "GROUP BY LISTINGS.JOB_TITLE) AS DERIVED_TABLE "
-           
-                    + "ON         DERIVED_TABLE.JOB_TITLE = CAREERS.JOB_TITLE "
-                    + "ORDER BY   DERIVED_TABLE.SUM DESC; "
+    const theQuery =    "SELECT     E.COMPANY, ROUND(E.AVG_SAL - ( SELECT AVG(PROP_SALARY) FROM LISTINGS)) AS \"company_vs_market_avg\" "
+                        + "FROM       EMPLOYERS E, LISTINGS L "
+                        + "WHERE      E.COMPANY = L.COMPANY "
+                        + "GROUP BY   E.COMPANY "
+                        + "ORDER BY   ROUND(E.AVG_SAL - (     SELECT AVG(PROP_SALARY) FROM LISTINGS)) DESC; "
     pool.query(theQuery).then(result => {
         console.log(result)
-        response.render('career', {
+        response.render('company', {
             job_title: job_title,
             result: result.rows
         })

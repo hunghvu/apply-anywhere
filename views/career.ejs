@@ -44,32 +44,13 @@
                 </li>
                 <li class="nav-item active">
                     <a class="nav-link" href="../salarypercompany">Compare Salary</a>
-                    <!--
-                     <li class="nav-item dropdown">
-                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-                         <div class="dropdown-menu">
-                             <a class="dropdown-item" href="#">Action</a>
-                             <a class="dropdown-item" href="#">Another action</a>
-                             <a class="dropdown-item" href="#">Something else here</a>
-                             <div class="dropdown-divider"></div>
-                             <a class="dropdown-item" href="#">Separated link</a>
-                         </div>
-                     </li>
-                 -->
             </ul>
-            <!-- <form class="form-inline my-2 my-lg-0">
-                     <input class="form-control mr-sm-2" type="text" placeholder="Search">
-                     <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-                 </form> -->
         </div>
     </nav>
 
     <div class="jumbotron">
-        <!-- <p class="lead">Select a job title</p> -->
         <hr class="my-4">
         <form method="GET" action="../career">
-            <!-- First table -->
-            <!-- w-auto for auto width -->
             <table class="table table-hover w-auto" style="float: left;">
                 <caption style="color: green;">Job Titles and number of Openings</caption>
                 <thead>
@@ -77,10 +58,8 @@
                     <tr class="table-success">
                         <th scope="col" style="width: 50%;">Job Title</th>
                         <th scope="col">Openings</th>
-                        <!-- <th scope="col">The Industry</th>  -->
                     </tr>
                 </thead>
-                <!-- Dynamically popuilate job openings table (the first one)                         -->
                 <%
                          if(typeof result != 'undefined'){
                             var set = new Set()
@@ -103,10 +82,10 @@
             <!-- Using chart.js to create chart -->
             <% if(typeof result != 'undefined'){ %>
             <script>
-                // Cannot access result in script? -> use json stringify 
-                // to generate an array of json object?
+                // Cannot access result in script, so use json stringify 
+                // to generate an array of json object.
                 var jobResultJson = <%- JSON.stringify(result) %>
-                    var titleSet = new Set()
+                var titleSet = new Set()
                 var openingMap = new Map()
                 // Using set to avoid duplicated color, even if the chance is low.
                 //  However, if there is a duplicated color, that index is skipped.
@@ -124,6 +103,8 @@
                 var titleArray = Array.from(titleSet)
                 var openingArray = Array.from(openingMap.values())
                 var colorArray = Array.from(colorSet)
+
+                // Create chart.
                 var chart = document.getElementById("myChart").getContext("2d")
                 var jobChart = new Chart(chart, {
                     type: "horizontalBar",
@@ -163,7 +144,7 @@
                         <th scope="col">Industry</th>
                     </tr>
                 </thead>
-                <!-- Dynamically career path table -->
+                <!-- Dynamically populate table -->
                 <%
                      if(typeof result != 'undefined'){
                          result.forEach(row => { 
