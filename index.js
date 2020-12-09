@@ -31,19 +31,15 @@ app.use(favicon(path.join(__dirname, "public", "favicon.ico")))
 // app.use("/search", require("./demo-routes/home_demo.js"))
 // app.use("/search", require("./demo-routes/home_demo.js"))
 
-// End point for home page, offer page, career path, salary (city) and salary (company).
+// End point for home page, Jobs page, Openings page, City Overview and Compare Salary page.
 app.get("/", (request, response) => {
     response.render("index", {})
 })
 
 app.use("/offer", require("./routes/offer.js"))
 app.use("/career", require("./routes/career.js"))
-app.get("/salarypercity", (request, response) => {
-    response.render("salcity", {})
-})
-app.get("/salarypercompany", (request, response) => {
-    response.render("salcompany", {})
-})
+app.use("/salarypercity", require("./routes/city.js"))
+app.use("/salarypercompany", require("./routes/company.js"))
 
 // Not implement.
 // app.get("/project", (request, response) => {

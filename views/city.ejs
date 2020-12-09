@@ -1,5 +1,5 @@
 <!-- 
-    Front end of Openings page.
+    Front end of City Overview page.
     Author: Hung Vu
  -->
 <!DOCTYPE html>
@@ -14,7 +14,7 @@
         integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw=="
         crossorigin="anonymous"></script>
     <!-- chartjs-plugin-labels/ https://github.com/emn178/chartjs-plugin-labels -->
-    <!-- <script src="https://cdn.jsdelivr.net/gh/emn178/chartjs-plugin-labels/src/chartjs-plugin-labels.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/gh/emn178/chartjs-plugin-labels/src/chartjs-plugin-labels.js"></script>
     <link rel="stylesheet" href="https://bootswatch.com/4/pulse/bootstrap.min.css">
 </head>
 
@@ -52,114 +52,104 @@
         <hr class="my-4">
         <form method="GET" action="../career">
             <table class="table table-hover w-auto" style="float: left;">
-                <caption style="color: green;">Job Titles and number of Openings</caption>
+                <caption style="color: green;">Average-actual salary vs. Average-expected salary per city</caption>
                 <thead>
-
                     <tr class="table-success">
-                        <th scope="col" style="width: 50%;">Job Title</th>
-                        <th scope="col">Openings</th>
+                        <th scope="col" style="width: 50%;">City</th>
+                        <th scope="col">Average-actual salary</th>
+                        <th scope="col">Average-expected salary</th>
                     </tr>
                 </thead>
+
+                <!-- Dynamically populate table -->
                 <%
-                         if(typeof result != 'undefined'){
-                            var set = new Set()
-                             result.forEach(row => { 
-                                if (!set.has(row.job_title)){
-                         %>
+                          if(typeof result != 'undefined'){
+                              result.forEach(row => { 
+
+                          %>
                 <tr>
-                    <td><%= row.job_title %></td>
-                    <td><%= row.sum %></td>
+                    <td><%= row.work_city %></td>
+                    <td><%= row.avg_actual %></td>
+                    <td><%= row.avg_expected %></td>
                 </tr>
-                <%          set.add(row.job_title)
-                                    }
-                             })
-                         } %>
+                <%          
+                                     
+                              })
+                          } %>
             </table>
 
             <!-- Chart  -->
-            <canvas id="myChart" width="1000" height="500"></canvas>            
+            <canvas id="myChart" width="1000" height="500"></canvas>
 
             <!-- Using chart.js to create chart -->
             <% if(typeof result != 'undefined'){ %>
             <script>
-                // Cannot access result in script, so use json stringify 
-                // to generate an array of json object.
+                // Cannot access result in script? -> use json stringify 
+                // to generate an array of json object?
                 var jobResultJson = <%- JSON.stringify(result) %>
-                var titleSet = new Set()
-                var openingMap = new Map()
+
+                var citySet = new Set()
+
                 // Using set to avoid duplicated color, even if the chance is low.
                 //  However, if there is a duplicated color, that index is skipped.
                 //  In other words, 1 color is lost, but the probability is low.
                 var colorSet = new Set()
+                var colorArray1 = []
+                var colorArray2 = []
+                var avgActualSalaryArray = []
+                var avgExpectedSalaryArray = []
+                var color1 = "#" + Math.floor(Math.random() * 16581375).toString(16)
+                var color2 = "#" + Math.floor(Math.random() * 16581375).toString(16)
                 jobResultJson.forEach(row => {
-                    titleSet.add(row.job_title)
-                    // Key:value pair is add in order, so value's respective index will
-                    //  be the same, and pair-able with titleSet
-                    openingMap.set(row.job_title, row.sum)
-                    // Randomly generate color for pie chart
-                    //  16581375 is a max RGB value
-                    colorSet.add("#" + Math.floor(Math.random() * 16581375).toString(16))
-                });
-                var titleArray = Array.from(titleSet)
-                var openingArray = Array.from(openingMap.values())
-                var colorArray = Array.from(colorSet)
+                    citySet.add(row.work_city)
+                    avgActualSalaryArray.push(row.avg_actual)
+                    avgExpectedSalaryArray.push(row.avg_expected)
+                    colorArray1.push(color1)
+                    colorArray2.push(color2)
 
-                // Create chart.
+                });
+
+                var cityArray = Array.from(citySet)
+
+
                 var chart = document.getElementById("myChart").getContext("2d")
                 var jobChart = new Chart(chart, {
-                    type: "horizontalBar",
+                    type: "bar",
                     data: {
-                        labels: titleArray,
+                        labels: cityArray,
                         datasets: [{
-                            data: openingArray,
-                            backgroundColor: colorArray
-                        }]
+                            label: "Average-actual salary",
+                            data: avgActualSalaryArray,
+                            backgroundColor: colorArray1
+                        },
+                        {
+                            label: "Average-expected salary",
+                            data: avgExpectedSalaryArray,
+                            backgroundColor: colorArray2
+                        }
+                    ]
                     },
                     options: {
                         maintainAspectRatio: false,
                         responsive: false,
+                        plugins: {
+                            labels: [
+                                {
+                                    render: 'value',
+                                }]
+                        },
                         scales: {
-                            xAxes: [{
+                            yAxes: [{
                                 ticks: {
                                     beginAtZero: true
                                 }
                             }]
-                        },
-                        legend: {
-                            display: false,
                         }
                     }
                 })
             </script>
             <% } %>
-
-            <!-- Second table -->
-            <table class="table table-hover">
-                <caption style="color: green;">Job Titles and their Industry</caption>
-                <thead>
-
-
-                    <tr class="table-success">
-                        <th scope="col" style="width: 50%;">Job Title</th>
-                        <th scope="col">Industry</th>
-                    </tr>
-                </thead>
-                <!-- Dynamically populate table -->
-                <%
-                     if(typeof result != 'undefined'){
-                         result.forEach(row => { 
-                     %>
-                <tr>
-                    <td><%= row.job_title %></td>
-                    <td><%= row.industry %></td>
-                </tr>
-                <%                                     
-                         })
-                     } %>
-
-            </table>
         </form>
-
     </div>
 </body>
 

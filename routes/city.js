@@ -1,5 +1,5 @@
 /**
- * Middleware to process request from Openings page.
+ * Middleware to process request from City page.
  * @author Hung vu
  */
 
@@ -29,17 +29,15 @@ router.get("/", (request, response, next) => {
 }, (request, response) => {
     // Info to populate table
     value = [request.query.job_title]
-    const theQuery =  "SELECT     DERIVED_TABLE.sum, DERIVED_TABLE.JOB_TITLE, CAREERS.INDUSTRY "
-                    + "FROM       CAREERS "
-                    + "FULL JOIN (    SELECT SUM(LISTINGS.JOB_OPENINGS), LISTINGS.JOB_TITLE "
-                                    + "FROM LISTINGS "
-                                    + "GROUP BY LISTINGS.JOB_TITLE) AS DERIVED_TABLE "
-           
-                    + "ON         DERIVED_TABLE.JOB_TITLE = CAREERS.JOB_TITLE "
-                    + "ORDER BY   DERIVED_TABLE.SUM DESC; "
+    const theQuery =   "SELECT     LISTINGS.WORK_CITY, ROUND(AVG(LISTINGS.PROP_SALARY)) AS \"avg_actual\", ROUND(AVG(J.EXP_SAL)) AS \"avg_expected\" "
+                        + "FROM       JOBS J "
+                        + "JOIN       LISTINGS "
+                        + "ON         LISTINGS.JOB_TITLE = J.JOB_TITLE "
+                        + "GROUP BY   LISTINGS.WORK_CITY "
+                        + "ORDER BY   ROUND(AVG(LISTINGS.PROP_SALARY)) DESC; "
     pool.query(theQuery).then(result => {
         console.log(result)
-        response.render('career', {
+        response.render('city', {
             job_title: job_title,
             result: result.rows
         })
