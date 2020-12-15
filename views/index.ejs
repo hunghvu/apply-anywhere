@@ -1,63 +1,145 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <!-- 
     Home page for the project.
     The code is from class assignment, and has been modified
     to suit our group product.
     Author: Hung Vu
 -->
-<html lang="en"> 
-    <head> 
-        <meta charset="UTF-8"> 
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-        <title>Apply Anywhere</title> 
-        <!-- Add a reference to the external stylesheet --> 
-        <link rel="stylesheet" href="https://bootswatch.com/4/pulse/bootstrap.min.css"> 
-        <link rel="icon" href="../favicon.ico">
-    </head> 
-    <body> 
-        <!-- TODO (optional): Try to add blur background -->
-        <!-- <div style="background-image: url(background.jpg);"></div> -->
-        <!-- <img src="background.jpg"> -->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-            <a class="navbar-brand" href="../">Apply Anywhere</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+<html lang="en">
 
-            <!-- Nav bar -->
-            <div class="collapse navbar-collapse" id="navbarColor02">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="../">Home
-                            <span class="sr-only">(current)</span>
-                        </a>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="../offer">Jobs</a>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="../career">Openings</a>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="../salarypercity">City Overview</a>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="../salarypercompany">Compare Salary</a>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="../listings">Listings</a>
-                    </li>           
-                </ul>
-            </div>
-        </nav>
-        <div class="jumbotron">
-            <h1 class="display-3">Welcome to Apply Anywhere!</h1>
-            <h2 class="display-5">A job hunting platform.</h2>
-            <hr class="my-4">
-            <p>This is a Node.js project, combined with PostgreSQL DBMS to retrieve data from the database.</p>
-            <p class="lead">
-                <a class="btn btn-primary btn-lg" href="#" role="button">thank you for visiting!</a>
-            </p>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply Anywhere</title>
+    <!-- Add a reference to the external stylesheet -->
+    <link rel="stylesheet" href="https://bootswatch.com/4/pulse/bootstrap.min.css">
+    <link rel="icon" href="../favicon.ico">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" href="../">
+            <img src="logo.png" alt="logo" style="width:50px;height:50px">
+            Apply Anywhere
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02"
+            aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Nav bar -->
+        <div class="collapse navbar-collapse" id="navbarColor02">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="../">Home
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="../offer">Jobs</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="../career">Openings</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="../salarypercity">City Overview</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="../salarypercompany">Compare Salary</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="../listings">Listings</a>
+                </li>
+            </ul>
         </div>
-    </body> 
+    </nav>
+
+    <div class="jumbotron">
+        <h1 class="display-3">Welcome to Apply Anywhere!</h1>
+        <h3>A job hunting platform.</h3>
+        <hr class="my-3">
+        <p style="font-size: large;">This is a Node.js project, combined with PostgreSQL DBMS to retrieve data from the
+            database.</p>
+
+
+        <div style="width:1850px;height:500px;background: #FFC0CB; 
+            border-radius: 10px 60px 30px;padding:20px">
+
+            <h3 class="display-4">Disclaimer</h3>
+            <p style="font-size: large;">The data provided on our web pages does not reflect reality.
+                We are using dummy data only to demonstrate the functionality of our database.</p>
+
+            <div style="float: right;">
+                <figure>
+                    <img src="shibuya.jpg" style="margin-right: 70px;" title="Image by Daryan Shamkhali">
+                    <figcaption style="margin-left: 190px;">
+                        Image by Daryan Shamkhali
+                    </figcaption>
+                </figure>
+            </div>
+
+            <h3 class="display-4">Overview</h3>
+            <div style="width:1000px;height: 100px; float: left; font-size: large;">
+                Many job searching platforms usually create hassles for job hunters. This includes but is not limited to
+                requiring registration, not being user friendly
+                or including a plethora of irrelevant information and so on. This effectively downgrades the experience
+                of job hunters who always need to utilize their time efficiently.
+                Leaving the task of interpreting requirements and benefits to the applicant is not optimal and may even
+                affect the number or quality of people that are applying.
+                Our goal is to provide the most up-to-date STEM job postings along with a central location where
+                applicants and employers can search whether at a desk
+                or on the go. A simple user-friendly database and interface will provide people a platform/market
+                analysis to get back out into the industry and
+                help businesses get back on their feet during or after the pandemic.
+            </div>
+        </div>
+
+        <br>
+
+        <div style="width:1850px;height:350px;background: #FED8B1; 
+            border-radius: 10px 60px 30px;padding:20px; font-size: large; text-align: center; background: url(background-pattern.jpg); color: white">
+
+            <h3 class="display-4">Description</h3>
+                <p style="margin-left: 350px; margin-right: 350px;">
+                For the project, we decide to create a Node.js backend instead of PHP since we are more familiar with
+                this technology.
+                As a result, Heroku is our cloud provider as we consider it is easier to work with a Node.js project on
+                Heroku.
+                Besides, Heroku provide a free tier, so the server can stay online almost 24/7
+                (It goes to sleep if the server is idle for a while, then awake when a request is retrieved).
+                <br>
+                <br>
+                In summary, the main technologies that we use for our project are Heroku cloud, Node.js backend, Express
+                framework, and PostgreSQL DBMS.
+                Unlike what we did in the previous assignment, our code is edited using VS Code and tested on local
+                machine by deploying a local Node.js/PostgreSQL server.
+                Then the code base is pushed to our GitHub repository and automatically deployed to Heroku cloud.
+                </p>
+        </div>
+
+    </div>
+
+    <!-- Source: https://bootswatch.com/pulse/ -->
+    <footer>
+        <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                TCSS 445 Group 9 - Autumn 2020
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                &copy; Hung Vu, Cliff Kaldveer
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                Contact Information
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <a style="margin-left: 20px; color: white" href="mailto:hungvu@uw.edu">Hung Vu - hungvu@uw.edu</a>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <a style="margin-left: 20px; color: white" href="mailto:ckald@uw.edu">Cliff Kaldveer - ckald@uw.edu</a>
+            </li>
+        </ul>
+    </footer>
+
+</body>
+
 </html>
